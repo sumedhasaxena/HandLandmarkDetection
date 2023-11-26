@@ -12,13 +12,59 @@ FONT_THICKNESS = 1
 HANDEDNESS_TEXT_COLOR = (88, 205, 54)  # vibrant green
 DISTANCE_TEXT_COLOR = (255, 255, 255)
 COORDINATES_TEXT_COLOR = (0, 0, 0)
-
+font = cv2.FONT_HERSHEY_COMPLEX
 landmark_coordinate_list = {}
+
+def get_and_draw_contours(image):
+    annotated_image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # Converting image to a binary image
+    # ( black and white only image).
+    _, threshold = cv2.threshold(annotated_image_gray, 190, 255, cv2.THRESH_BINARY)
+    # Detecting contours in image.
+    contours, _ = cv2.findContours(threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+    maxc = max(contours, key=cv2.contourArea)
+    x1, y1, w1, h1 = cv2.boundingRect(maxc)
+    cv2.rectangle(image, (x1, y1), (x1 + w1, y1 + h1), (0, 255, 255), 20)
+    print("biggest" + str(x1) + " " + str(y1))
+
+
+    # Going through every contours found in the image.
+    for cnt in contours:
+        approx = cv2.approxPolyDP(cnt, 0.009 * cv2.arcLength(cnt, True), True)
+        # draws boundary of contours.
+        cv2.drawContours(image, [approx], 0, (0, 0, 255), 5)
+        # Used to flatted the array containing
+        # the co-ordinates of the vertices.
+        n = approx.ravel()
+        i = 0
+
+        for j in n:
+            if (i % 2 == 0):
+                x = n[i]
+                y = n[i + 1]
+
+                # String containing the co-ordinates.
+                string = str(x) + " " + str(y)
+
+                cv2.putText(image, string, (x, y), font, 0.5, (0, 255, 0))
+
+                # if (i == 0):
+                #     # text on topmost co-ordinate.
+                #     cv2.putText(image, "Arrow tip", (x, y),
+                #                 font, 0.5, (255, 0, 0))
+                # else:
+                #     # text on remaining co-ordinates.
+                #     cv2.putText(image, string, (x, y), font, 0.5, (0, 255, 0))
+            i = i + 1
+
+    return image
 
 
 def get_and_print_distance_between_landmarks(annotated_image, landmark1_index, landmark2_index):
-    distance_1_2 = math.hypot(landmark_coordinate_list[landmark2_index]['x'] - landmark_coordinate_list[landmark1_index]['x'],
-                              landmark_coordinate_list[landmark2_index]['y'] - landmark_coordinate_list[landmark1_index]['y'])
+    distance_1_2 = math.hypot(
+        landmark_coordinate_list[landmark2_index]['x'] - landmark_coordinate_list[landmark1_index]['x'],
+        landmark_coordinate_list[landmark2_index]['y'] - landmark_coordinate_list[landmark1_index]['y'])
 
     distance_1_2_text_x, distance_1_2_text_y = get_dist_text_coordinates(landmark_coordinate_list[landmark1_index]['x'],
                                                                          landmark_coordinate_list[landmark1_index]['y'],
@@ -66,7 +112,7 @@ def draw_landmarks_on_image(rgb_image, detection_result):
         text_x = int(max(x_coordinates) * width)
         text_y = int(min(y_coordinates) * height) - MARGIN
 
-        #https://mediapipe.readthedocs.io/en/latest/solutions/hands.html#multi-handedness : hack to flip handedness if the back of hand is photographed
+        # https://mediapipe.readthedocs.io/en/latest/solutions/hands.html#multi-handedness : hack to flip handedness if the back of hand is photographed
         # Draw handedness (left or right hand) on the image.
         if handedness[0].category_name == "Right":
             handedness = "Left"
