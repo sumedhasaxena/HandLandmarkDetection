@@ -15,13 +15,12 @@ COORDINATES_TEXT_COLOR = (0, 0, 0)
 font = cv2.FONT_HERSHEY_COMPLEX
 landmark_coordinate_list = {}
 scaling_factor = 1
+A4_WIDTH_CMS = 21
+A4_HEIGHT_CMS = 29.7
 
 
 def get_and_draw_contours(image):
-    """
 
-    :rtype: object
-    """
     annotated_image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     annotated_image_gray = cv2.GaussianBlur(annotated_image_gray, (5, 5), 0)
     _, threshold = cv2.threshold(annotated_image_gray, 190, 255, cv2.THRESH_BINARY)
@@ -33,46 +32,21 @@ def get_and_draw_contours(image):
 
     maxc = max(contours, key=cv2.contourArea)
 
-    cntIdx = 0
+    approx = cv2.approxPolyDP(maxc, 0.050 * cv2.arcLength(maxc, True), True)
 
-    # cnt_hand = contours[7]
-    approx = cv2.approxPolyDP(maxc, 0.009 * cv2.arcLength(maxc, True), True)
-
-    approx_copy = approx
     top1_x = approx[0][0][0]
     top1_y = approx[0][0][1]
     top2_x = approx[1][0][0]
     top2_y = approx[1][0][1]
 
-    distance_pixel = math.hypot((top1_x - top2_x),(top1_y - top2_y))
+    distance_pixel = math.hypot((top1_x - top2_x), (top1_y - top2_y))
 
     global scaling_factor
 
-    scaling_factor = 21 / distance_pixel
-
-
-    # approx_copy.sort(axis=0)
-    # topleft_1 = approx_copy[0]
-    # topleft_2 = approx_copy[1]
-    #
-    # topright_1 = approx_copy[approx_copy.__len__() - 1]
-    # topright_2 = approx_copy[approx_copy.__len__() - 2]
-    #
-    # flat_topleft_1 = topleft_1.ravel()
-    # flat_topleft_2 = topleft_2.ravel()
-    #
-    # flat_topright_1 = topright_1.ravel()
-    # flat_topright_2 = topright_2.ravel()
-    #
-    # tl = topleft_1
-    # tr = topright_1
-    #
-    # if(flat_topleft_2[1] < flat_topleft_1[1]):
-    #     tl = topleft_2
-    # if (flat_topright_2[1] < flat_topright_1[1]):
-    #     tr = topright_2
-
-    #print("top 2 coordinates = " +  str(tl[0]) + " " + str(tl[1]) + " " + str(tr[0]) + " " + str(tr[1]))
+    if abs(top1_x - top2_x) > abs(top1_y - top2_y):
+        scaling_factor = A4_WIDTH_CMS / distance_pixel
+    else:
+        scaling_factor = A4_HEIGHT_CMS / distance_pixel
 
     # find coordinates for top left and right of A4 sheet
 
@@ -158,12 +132,12 @@ def draw_landmarks_on_image(rgb_image, detection_result):
             x_coordinate_text = int(hand_landmarks[i].x * width)
             y_coordinate_text = int(hand_landmarks[i].y * height)
             landmark_coordinate_list[i] = {"x": x_coordinate_text, "y": y_coordinate_text}
-            #cv2.putText(annotated_image,
-             #           f"  ({x_coordinate_text},{y_coordinate_text})",
-              #          (x_coordinate_text, y_coordinate_text),
-               #         cv2.FONT_HERSHEY_DUPLEX,
-                #        .4, COORDINATES_TEXT_COLOR,
-                 #       1, cv2.LINE_AA)
+            # cv2.putText(annotated_image,
+            #           f"  ({x_coordinate_text},{y_coordinate_text})",
+            #          (x_coordinate_text, y_coordinate_text),
+            #         cv2.FONT_HERSHEY_DUPLEX,
+            #        .4, COORDINATES_TEXT_COLOR,
+            #       1, cv2.LINE_AA)
 
         print(landmark_coordinate_list)
 

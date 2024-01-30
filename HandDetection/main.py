@@ -6,7 +6,7 @@ from mediapipe.tasks.python import vision
 from drawHand import draw_landmarks_on_image, get_and_draw_contours
 from image_helper import ResizeWithAspectRatio
 
-IMG_FILE = 'hand_prof_1.jpeg'
+IMG_FILE = 'hand_test_4.jpg'
 
 #IMG_FILE = 'hand_prof_1.jpeg'
 #IMG_FILE = 'testContour.png'
