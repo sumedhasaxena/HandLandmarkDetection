@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1010</width>
+    <width>1282</width>
     <height>912</height>
    </rect>
   </property>
@@ -23,7 +23,7 @@
      <rect>
       <x>-20</x>
       <y>0</y>
-      <width>1031</width>
+      <width>1301</width>
       <height>41</height>
      </rect>
     </property>
@@ -154,9 +154,9 @@
     <property name="geometry">
      <rect>
       <x>400</x>
-      <y>90</y>
-      <width>601</width>
-      <height>761</height>
+      <y>80</y>
+      <width>881</width>
+      <height>771</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -166,16 +166,20 @@
      </sizepolicy>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-color: rgb(170, 255, 255);</string>
+     <string notr="true">border-color: rgb(170, 255, 255);
+background-image: url(:/default_image_background/images/upload_image_template.jpg);</string>
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="resources.qrc">:/default_image_background/images/upload_image_template.jpg</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
@@ -207,13 +211,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1010</width>
+     <width>1282</width>
      <height>22</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
