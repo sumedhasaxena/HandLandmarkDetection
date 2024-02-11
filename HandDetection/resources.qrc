@@ -1,5 +1,5 @@
 <RCC>
   <qresource prefix="default_image_background">
-    <file>images/upload_image_template.jpg</file>
+    <file>C:/Users/Sumedha/BMEProject/HandDetection/images/upload_image_template.jpg</file>
   </qresource>
 </RCC>

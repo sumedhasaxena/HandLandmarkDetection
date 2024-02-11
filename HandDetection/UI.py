@@ -15,7 +15,7 @@ class FileUploaderUI(QMainWindow):
 
         uic.loadUi("Layout.ui", self)
 
-        self.imageViewer.setScaledContents(True)
+        #self.imageViewer.setScaledContents(True)
 
         self.open_file_dialog_button = self.findChild(QPushButton, "pushButton")
         self.run_detection_button = self.findChild(QPushButton, "pushButton_2")

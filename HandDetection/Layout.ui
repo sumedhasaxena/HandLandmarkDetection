@@ -173,7 +173,7 @@ background-image: url(:/default_image_background/images/upload_image_template.jp
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="resources.qrc">:/default_image_background/images/upload_image_template.jpg</pixmap>
+     <pixmap resource="resources.qrc">:/default_image_background/C:/Users/Sumedha/BMEProject/HandDetection/images/upload_image_template.jpg</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
